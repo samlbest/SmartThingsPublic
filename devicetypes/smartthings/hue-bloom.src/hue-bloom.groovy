@@ -16,6 +16,7 @@ metadata {
 		capability "Switch"
 		capability "Refresh"
 		capability "Sensor"
+		capability "Health Check"
 
 		command "setAdjustedColor"
         command "reset"
@@ -53,6 +54,10 @@ metadata {
 		main(["rich-control"])
 		details(["rich-control", "reset", "refresh"])
 	}
+}
+
+void installed() {
+	sendEvent(name: "DeviceWatch-Enroll", value: "{\"protocol\": \"LAN\", \"scheme\":\"untracked\", \"hubHardwareId\": \"${device.hub.hardwareID}\"}")
 }
 
 // parse events into attributes
@@ -166,3 +171,4 @@ def verifyPercent(percent) {
         return false
     }
 }
+

@@ -14,6 +14,7 @@ metadata {
 		capability "Switch"
 		capability "Refresh"
 		capability "Sensor"
+        capability "Health Check"
 
         command "refresh"
 	}
@@ -46,6 +47,10 @@ metadata {
         main(["rich-control"])
         details(["rich-control", "refresh"])
     }
+}
+
+void installed() {
+	sendEvent(name: "DeviceWatch-Enroll", value: "{\"protocol\": \"LAN\", \"scheme\":\"untracked\", \"hubHardwareId\": \"${device.hub.hardwareID}\"}")
 }
 
 // parse events into attributes
@@ -87,3 +92,4 @@ void refresh() {
 	log.debug "Executing 'refresh'"
 	parent.manualRefresh()
 }
+

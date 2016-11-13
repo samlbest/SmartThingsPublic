@@ -17,6 +17,7 @@ metadata {
 		capability "Switch"
 		capability "Refresh"
 		capability "Sensor"
+		capability "Health Check"
 
 		command "setAdjustedColor"
         command "reset"
@@ -62,6 +63,10 @@ metadata {
 		main(["rich-control"])
 		details(["rich-control", "colorTempSliderControl", "colorTemp", "reset", "refresh"])
 	}
+}
+
+void installed() {
+	sendEvent(name: "DeviceWatch-Enroll", value: "{\"protocol\": \"LAN\", \"scheme\":\"untracked\", \"hubHardwareId\": \"${device.hub.hardwareID}\"}")
 }
 
 // parse events into attributes
@@ -169,7 +174,7 @@ void setColorTemperature(value) {
 
 void refresh() {
     log.debug "Executing 'refresh'"
-    parent.manualRefresh()
+    parent?.manualRefresh()
 }
 
 def verifyPercent(percent) {
@@ -182,3 +187,4 @@ def verifyPercent(percent) {
         return false
     }
 }
+
